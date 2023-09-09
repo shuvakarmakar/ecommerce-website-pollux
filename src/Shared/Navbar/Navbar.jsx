@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { FaCartPlus } from "react-icons/fa";
+import useAdmin from "../../hooks/useAdmin";
 
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
+    const [isAdmin] = useAdmin();
 
     useEffect(() => {
         if (user) {
@@ -26,7 +29,7 @@ const Navbar = () => {
         <>
             <li className="text-black"><Link to="/">Home</Link></li>
             <li><Link to="/dashboard">Dashboard</Link></li>
-            <li><Link to="/cart">Cart</Link></li>
+            {!isAdmin && <li><Link to="/dashboard/cart"><FaCartPlus /> Cart</Link></li>} {/* Render only if the user is not an admin */}
         </>
     );
 

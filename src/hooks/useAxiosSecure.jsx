@@ -5,7 +5,7 @@ import useAuth from './useAuth';
 
 
 const axiosSecure = axios.create({
-  baseURL: 'http://localhost:5005',
+  baseURL: 'https://ecommerce-pollux-server.vercel.app',
 });
 
 

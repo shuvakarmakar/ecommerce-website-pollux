@@ -7,7 +7,7 @@ const Products = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:5005/products')
+        fetch('https://ecommerce-pollux-server.vercel.app/products')
             .then((response) => response.json())
             .then((data) => {
                 setProducts(data);
@@ -19,7 +19,7 @@ const Products = () => {
 
     const fetchProductsBySearchTerm = async (searchQuery) => {
         try {
-            const response = await fetch(`http://localhost:5005/products?search=${searchQuery}`);
+            const response = await fetch(`https://ecommerce-pollux-server.vercel.app/products?search=${searchQuery}`);
             if (response.ok) {
                 const data = await response.json();
                 setProducts(data);
@@ -34,7 +34,7 @@ const Products = () => {
     const handleSearch = (query) => {
         setSearchTerm(query);
         if (query.trim() === '') {
-            fetch('http://localhost:5005/products')
+            fetch('https://ecommerce-pollux-server.vercel.app/products')
                 .then((response) => response.json())
                 .then((data) => {
                     setProducts(data);
@@ -65,7 +65,7 @@ const Products = () => {
                         </div>
                         <div className="p-4">
                             <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
-                            <p className="text-gray-600 mb-2">${product.price.toFixed(2)}</p>
+                            <p className="text-gray-600 mb-2">${product.price}</p>
                             <p className="text-sm text-gray-500">{product.description}</p>
                             <Link
                                 to={`/product/${product._id}`}

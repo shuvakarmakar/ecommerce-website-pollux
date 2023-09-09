@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { AuthContext } from '../../../Provider/AuthProvider';
+import useAdmin from '../../../hooks/useAdmin';
 
 const ProductDetails = () => {
     const { id } = useParams();
+    console.log(id);
     const [product, setProduct] = useState(null);
+    const { user } = useContext(AuthContext);
+    const [isAdmin] = useAdmin();
 
     useEffect(() => {
-        fetch(`http://localhost:5005/products/${id}`)
+        fetch(`https://ecommerce-pollux-server.vercel.app/products/${id}`)
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -26,6 +32,48 @@ const ProductDetails = () => {
         return <div>Loading...</div>;
     }
 
+    const handleAddToCart = () => {
+        const userData = {
+            email: user?.email,
+        };
+
+        // Ensure that the `id` is correctly extracted from the `params` object
+        const productId = id;
+
+        // Ensure that product data is sent in the request body
+        const requestData = {
+            email: userData.email,
+            quantity: 1,
+            product: product, 
+        };
+
+        fetch(`https://ecommerce-pollux-server.vercel.app/cart/add/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData), 
+        })
+            .then((response) => {
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Product Added to Cart',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                } else {
+                    throw new Error('Failed to add product to cart');
+                }
+            })
+            .catch((error) => {
+                console.error('Error adding product to cart:', error);
+            });
+    };
+
+
+
+
     return (
         <div className="container mx-auto p-4 flex justify-center items-center">
             <div className="card card-compact w-96 bg-base-100 shadow-xl">
@@ -36,13 +84,12 @@ const ProductDetails = () => {
                     <h2 className="card-title">{product.name}</h2>
                     <p>{product.description}</p>
                     <div className="card-actions justify-end">
-                        <p className="text-gray-600 text-lg">${product.price.toFixed(2)}</p>
-                        <Link
-                            to={`/cart/add/${product.id}`} // Change the path to the correct route
-                            className="btn btn-primary mt-2"
-                        >
-                            Add to Cart
-                        </Link>
+                        <p className="text-gray-600 text-lg">${product.price}</p>
+                        {!isAdmin && (
+                            <button onClick={handleAddToCart} className="btn btn-primary mt-2">
+                                Add to Cart
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

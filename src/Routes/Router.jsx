@@ -12,6 +12,8 @@ import AddProducts from "../Pages/Dashboard/Admin Dashboard/AddProducts";
 import ManageUsers from "../Pages/Dashboard/Admin Dashboard/ManageUsers";
 import Checkout from "../Pages/Dashboard/UserDashboard/Checkout";
 import ProductDetails from "../Pages/Home/Products/ProductDetails";
+import Cart from "../Pages/Dashboard/UserDashboard/Cart";
+import ManageProducts from "../Pages/Dashboard/Admin Dashboard/ManageProducts";
 
 
 export const router = createBrowserRouter([
@@ -47,8 +49,12 @@ export const router = createBrowserRouter([
         children: [
             // Customers Route
             {
-                path: 'cart',
+                path: 'checkout',
                 element: <Checkout></Checkout>
+            },
+            {
+                path: 'cart',
+                element: <Cart></Cart>
             },
             // Admin Route
             {
@@ -58,6 +64,10 @@ export const router = createBrowserRouter([
             {
                 path: 'manageUsers',
                 element: <ManageUsers></ManageUsers>
+            },
+            {
+                path: 'manageProducts',
+                element: <ManageProducts></ManageProducts>
             }
         ]
     }

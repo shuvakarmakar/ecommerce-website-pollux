@@ -20,7 +20,7 @@ const SocialLogin = () => {
                 console.log(loggedInUser);
                 const saveUser = { name: loggedInUser.displayName, email: loggedInUser.email, image: loggedInUser.photoURL }
 
-                fetch('http://localhost:5005/users', {
+                fetch('https://ecommerce-pollux-server.vercel.app/users', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'

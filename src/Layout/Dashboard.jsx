@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { FaHome, FaProductHunt, FaUser } from "react-icons/fa";
+import { FaCartPlus, FaHome, FaProductHunt, FaUser } from "react-icons/fa";
 import { Slide } from "react-awesome-reveal";
 import Navbar from "../Shared/Navbar/Navbar";
 import { useContext } from "react";
@@ -37,6 +37,12 @@ const Dashboard = () => {
                                             Add Products
                                         </NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink to="/dashboard/manageProducts">
+                                            <FaProductHunt className="mr-2" />
+                                            Manage Products
+                                        </NavLink>
+                                    </li>
                                     <div className="divider"></div>
                                     <li>
                                         <NavLink to="/">
@@ -49,8 +55,14 @@ const Dashboard = () => {
                                 <>
                                     <li>
                                         <NavLink to="/dashboard/cart">
-                                            <FaHome className="mr-2" />
+                                            <FaCartPlus className="mr-2" />
                                             Cart
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink to="/dashboard/checkout">
+                                            <FaCartPlus className="mr-2" />
+                                            Checkout
                                         </NavLink>
                                     </li>
                                     <div className="divider"></div>
