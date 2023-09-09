@@ -1,23 +1,49 @@
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
+const img_hosting_token = import.meta.env.VITE_Image_Upload_Token;
 const AddProducts = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
 
     // Handle form submission
     const onSubmit = async (data) => {
         try {
-            // Send a POST request to your backend API with the data object
+            // Upload the image to the image hosting service
+            const imageData = new FormData();
+            imageData.append('image', data.image[0]); // Use [0] to access the first selected file
+
+            const imgResponse = await fetch(img_hosting_url, {
+                method: 'POST',
+                body: imageData,
+            });
+
+            if (!imgResponse.ok) {
+                console.error('Image upload failed:', imgResponse);
+                return;
+            }
+
+            const imgData = await imgResponse.json();
+            const imageUrl = imgData.data.url;
+
+            // Create the product data with the image URL
+            const productData = {
+                name: data.name,
+                price: parseFloat(data.price),
+                description: data.description,
+                image: imageUrl, // Use the uploaded image URL here
+            };
+
+            // Send the product data to your server
             const response = await fetch('http://localhost:5005/products', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(productData),
             });
 
             if (response.ok) {
-                // Display a success alert using Swal
                 Swal.fire({
                     icon: 'success',
                     title: 'Product Added',
@@ -28,11 +54,9 @@ const AddProducts = () => {
                 reset();
             } else {
                 console.error('Product creation failed:', response);
-                // Display an error alert using Swal or handle the error as needed
             }
         } catch (error) {
             console.error('Error adding product:', error);
-            // Display an error alert using Swal or handle the error as needed
         }
     };
 
@@ -70,9 +94,9 @@ const AddProducts = () => {
                     {errors.description && <span className="text-red-500 text-sm">This field is required</span>}
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">Product Image URL:</label>
+                    <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">Product Image:</label>
                     <input
-                        type="text"
+                        type="file"
                         id="productImage"
                         className={`mt-1 p-2 w-full rounded-md focus:ring focus:ring-indigo-200 ${errors.image ? 'border-red-500' : 'border-gray-300'}`}
                         {...register('image', { required: true })}

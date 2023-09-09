@@ -2,6 +2,7 @@ import { useContext, useRef } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Login = () => {
 
@@ -12,13 +13,11 @@ const Login = () => {
 
     const from = location.state?.from?.pathname || '/';
 
-    const handleLogin = event => {
+    const handleLogin = (event) => {
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-
-        // console.log(email, password);
 
         // SignIn Call
         signIn(email, password)
@@ -26,12 +25,23 @@ const Login = () => {
                 const loggedUser = result.user;
                 console.log(loggedUser);
                 navigate(from, { replace: true });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: 'You have successfully logged in.',
+                    showConfirmButton: false,
+                    timer: 1500, // Close the alert after 1.5 seconds
+                });
             })
             .catch((error) => {
                 console.log(error);
-            })
-    }
-
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: 'There was an error logging in. Please check your credentials.',
+                });
+            });
+    };
 
     const handleGoogleLogin = () => {
         signInWithGoogle()
@@ -39,9 +49,21 @@ const Login = () => {
                 const loggedUser = result.user;
                 console.log(loggedUser);
                 navigate(from, { replace: true });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Google Login Successful',
+                    text: 'You have successfully logged in with Google.',
+                    showConfirmButton: false,
+                    timer: 1500, // Close the alert after 1.5 seconds
+                });
             })
             .catch((error) => {
                 console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Google Login Failed',
+                    text: 'There was an error logging in with Google. Please try again later.',
+                });
             });
     };
 
@@ -84,14 +106,14 @@ const Login = () => {
                                 </label>
                                 <input type="password" name='password' placeholder="password" className="input input-bordered" />
                                 <label className="label">
-                                    <p><small>Forgot password? Please <button onClick={handleResetPassword} className=" btn-link"> Reset Password</button> </small></p>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
                                 <input type="submit" value="Login" className="btn btn-primary" />
                             </div>
                         </form>
-                        <p className='my-4 text-center'>New to thi Ecommerce Site ? Please <Link className='text-amber-300' to='/signup'>Sign Up</Link></p>
+                        <p><small>Forgot password? Please <button onClick={handleResetPassword} className=" btn-link"> Reset Password</button> </small></p>
+                        <p className='my-4 text-center'>New to this Ecommerce Site ? Please <Link className='text-amber-300' to='/signup'>Sign Up</Link></p>
                         <button onClick={handleGoogleLogin} className="btn btn-outline"><FaGoogle></FaGoogle> SignIn With Google</button>
                     </div>
 
