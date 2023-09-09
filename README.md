@@ -37,4 +37,28 @@ Make sure you have the following software installed:
 
     Paste this to the .env.local file and save it.
 
-5. Run with writing a command "npm run dev"
+5. Run with writing a command "npm run dev". Then website will run and for backend I have deployed the code to Vercel.
+
+
+Here's a list of the packages and their versions that you have used in your ecommerce-pollux project:
+
+- @tanstack/react-query
+- axios
+- firebase
+- react
+- react-awesome-reveal
+- react-helmet-async
+- react-hook-form
+- react-icons
+- sweetalert2
+- tailwindcss
+- vite
+- daisyUi
+
+For backend I have used
+
+- cors
+- dotenv
+- express
+- jsonwebtoken
+- mongodb
