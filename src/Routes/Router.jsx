@@ -11,6 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import AddProducts from "../Pages/Dashboard/Admin Dashboard/AddProducts";
 import ManageUsers from "../Pages/Dashboard/Admin Dashboard/ManageUsers";
 import Checkout from "../Pages/Dashboard/UserDashboard/Checkout";
+import ProductDetails from "../Pages/Home/Products/ProductDetails";
 
 
 export const router = createBrowserRouter([
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             {
                 path: "signup",
                 element: <SignUp></SignUp>
+            },
+            {
+                path: "product/:id",
+                element: <ProductDetails></ProductDetails>
             }
         ]
     },
